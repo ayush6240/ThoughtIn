@@ -1,4 +1,4 @@
-package com.example.reddit.repository;
+ package com.example.reddit.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
