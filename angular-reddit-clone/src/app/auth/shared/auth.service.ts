@@ -35,9 +35,10 @@ export class AuthService {
         this.localStorage.store('username', data.username);
         this.localStorage.store('refreshToken', data.refreshToken);
         this.localStorage.store('expiresAt', data.expiresAt);
-
         this.loggedIn.emit(true);
         this.username.emit(data.username);
+        console.log(data);
+        console.log( this.getUserName());
         return true;
       }));
   }
@@ -47,6 +48,10 @@ export class AuthService {
   }
 
   refreshToken() {
+    this.refreshTokenPayload = {
+      refreshToken: this.getRefreshToken(),
+      username: this.getUserName()
+    }
     return this.httpClient.post<LoginResponse>('http://localhost:8080/api/auth/refresh/token',
       this.refreshTokenPayload)
       .pipe(tap(response => {
@@ -60,6 +65,10 @@ export class AuthService {
   }
 
   logout() {
+    this.refreshTokenPayload = {
+      refreshToken: this.getRefreshToken(),
+      username: this.getUserName()
+    }
     this.httpClient.post('http://localhost:8080/api/auth/logout', this.refreshTokenPayload,
       { responseType: 'text' })
       .subscribe(data => {
